@@ -3,23 +3,27 @@ var router = express.Router();
 var passport = require('passport');
 
 router.route('/')
-	.get((req, res, next) => {
-		if(req.user) {
-			res.json({
-				message: 'authorization pass',
-				data: req.user
-			});
-		} else {
-			res.status(401).json({
-				message: 'authorization fobidden'
-			});
-		}
+	.get((req, res) => {
+		res.json({
+			message: 'Authorization passed',
+			data: {
+				username: req.user.username
+			}
+		});
 	})
-	.post(passport.authenticate('local', {
-		successRedirect: '/api/authorizations',
-		failureRedirect: '/api/authorizations',
-		failureFlash: false 
-	}));
+	.post(passport.authenticate('local'), function(req, res) {
+		res.json({
+			message: 'Authorization passed',
+			data: {
+				username: req.user.username
+			}
+		});
+	})
+	.delete(function(req, res) {
+		req.logOut();
+		res.status(204);
+		res.end();
+	});
 
 
 

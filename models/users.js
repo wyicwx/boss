@@ -4,9 +4,10 @@ var Schema = new mongoose.Schema({
 	username: String,
 	password: String
 }, {
-	collection: 'user'
+	collection: 'users',
+	versionKey: false
 });
 
-var User = mongoose.model('user', Schema);
+var User = mongoose.model('users', Schema);
 
 module.exports = User;
