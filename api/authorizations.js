@@ -7,7 +7,8 @@ router.route('/')
 		res.json({
 			message: 'Authorization passed',
 			data: {
-				username: req.user.username
+				username: req.user.username,
+				_id: req.user._id
 			}
 		});
 	})
@@ -15,7 +16,8 @@ router.route('/')
 		res.json({
 			message: 'Authorization passed',
 			data: {
-				username: req.user.username
+				username: req.user.username,
+				_id: req.user._id
 			}
 		});
 	})
