@@ -7,9 +7,6 @@
   margin: 0;
   padding: 0;
 }
-body {
-  font: 12px/1.5 "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", "Hiragino Sans GB", "SimSun", sans-serif;
-}
 ul,
 li {
   list-style: none;
@@ -769,6 +766,28 @@ a {
 }
 .pos_abs {
   position: absolute;
+}
+.main {
+  margin-top: 51px;
+}
+.w_pageanimate {
+  -webkit-transition: all 400ms ease;
+  -moz-transition: all 400ms ease;
+  -ms-transition: all 400ms ease;
+  transition: all 400ms ease;
+}
+.w_pageanimate.w_hide {
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+.w_navbar {
+  -webkit-transition: all 400ms ease;
+  -moz-transition: all 400ms ease;
+  -ms-transition: all 400ms ease;
+  transition: all 400ms ease;
+}
+.w_navbar.w_hide {
+  transform: translateY(-100%);
 }
 .w_progress {
   position: absolute;

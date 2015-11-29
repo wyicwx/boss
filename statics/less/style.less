@@ -1,6 +1,22 @@
 @import './fn.less';
 @import './common.less';
 
+.main {
+	margin-top: 51px;
+}
+
+.w_pageanimate {
+	.transition(all 400ms ease);
+	&.w_hide {
+		.opacity(0);
+	}
+}
+.w_navbar {
+	.transition(all 400ms ease);
+	&.w_hide {
+		transform: translateY(-100%);
+	}
+}
 .w_progress {
 	position: absolute;
 	left: 50%;

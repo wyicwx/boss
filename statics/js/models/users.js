@@ -6,9 +6,13 @@ define(function(require) {
 		defaults: {
 			username: undef
 		},
+		idAttribute: '_id',
 		url: '/api/authorizations',
 		parse: function(rawData) {
 			return rawData.data;
+		},
+		isLogin: function() {
+			return this.get('username') != undef
 		}
 	});
 
