@@ -7,11 +7,12 @@ define(function (require) {
 		getInitialState: function () {
 			return {
 				actived: false,
-				value: ''
+				value: '',
+				warning: false
 			};
 		},
 		onFocus: function () {
-			this.setState({ actived: true });
+			this.setState({ actived: true, warning: false });
 		},
 		onBlur: function () {
 			if (this.state.value) {
@@ -28,7 +29,8 @@ define(function (require) {
 			var state = this.state;
 			var boxClass = ReactClassnames({
 				w_input: true,
-				w_actived: state.actived
+				w_actived: state.actived,
+				w_warning: state.warning
 			});
 			return React.createElement(
 				'label',

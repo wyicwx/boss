@@ -12,6 +12,11 @@ define(function (require) {
 				password: ''
 			};
 		},
+		getDefaultProps: function () {
+			return {
+				onSubmit: () => {}
+			};
+		},
 		componentDidMount: function () {
 			var view = this;
 			setTimeout(function () {
@@ -21,6 +26,25 @@ define(function (require) {
 		handleSubmit: function (event) {
 			event.stopPropagation();
 			event.preventDefault();
+
+			var illegal = false;
+
+			var username = this.refs.username.state.value;
+			var password = this.refs.password.state.value;
+
+			if (!username) {
+				this.refs.username.setState({ warning: true });
+				illegal = true;
+			}
+			if (!password) {
+				this.refs.password.setState({ warning: true });
+				illegal = true;
+			}
+
+			if (!illegal) {
+				this.props.onSubmit(username, password);
+			}
+
 			return false;
 		},
 		render: function () {
@@ -33,7 +57,7 @@ define(function (require) {
 				'div',
 				{ className: boxClass },
 				React.createElement(
-					'h1',
+					'h3',
 					{ className: 'mt0' },
 					'Wellcome to BOSS.'
 				),
@@ -43,19 +67,19 @@ define(function (require) {
 					React.createElement(
 						'div',
 						{ className: 'mb20' },
-						React.createElement(LoginInput, { type: 'text', placeholder: 'username' })
+						React.createElement(LoginInput, { type: 'text', placeholder: 'username', value: state.username, ref: 'username' })
 					),
 					React.createElement(
 						'div',
 						{ className: 'mb20' },
-						React.createElement(LoginInput, { type: 'password', placeholder: 'password' })
+						React.createElement(LoginInput, { type: 'password', placeholder: 'password', value: state.password, ref: 'password' })
 					),
 					React.createElement(
 						'div',
 						{ className: 'tx_c' },
 						React.createElement(
 							'button',
-							{ type: 'submit', className: 'btn btn-primary' },
+							{ type: 'submit', className: 'btn btn-default' },
 							'登陆'
 						)
 					)

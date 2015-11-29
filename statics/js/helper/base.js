@@ -85,10 +85,7 @@
 		viewWillAddStage: function() {},
 		viewAddedStage: function() {},
 		viewBeActive: function() {},
-		viewBeInActive: function() {}
-	});
-
-	app.TPActionView = app.ActionView.extend({
+		viewBeInActive: function() {},
 		viewWillRemoveStage: function() {},
 		viewRemovedStage: function() {},
 		destroy: function() {}
@@ -143,19 +140,27 @@
 						action.onStage = false;
 					}
 					action.abortAjaxQueue();
-					if(action instanceof app.TPActionView) {
-						action.viewBeInActive();
-						action.viewWillRemoveStage();
-						action.$el.remove();
-						action.viewRemovedStage();
-						action.destroy();
-						delete controller.actions[name];
-					} else {
-						action.$el.hide();
-						action.viewBeInActive();
+
+					action.$el.hide();
+					action.viewBeInActive();
+					if(!action.mainTain) {
+						var done = function() {
+							action.viewWillRemoveStage();
+							action.$el.remove();
+							action.viewRemovedStage();
+							action.destroy();
+							delete controller.actions[name];
+						};
+						if(action.viewWillRemoveStage.length > 0) {
+							action.viewWillRemoveStage(function() {
+								done();
+							});
+						} else {
+							action.viewWillRemoveStage();
+							done()
+						}
 					}
 				}
-
 			});
 		},
 		constructor: function() {
