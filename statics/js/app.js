@@ -1,6 +1,7 @@
 requirejs.config({
 	baseUrl: './js/',
 	paths: {
+		'text': './vendors/require-text',
 		'base': './helper/base',
 		'react': './vendors/react',
 		'react-dom': './vendors/react-dom',
@@ -33,7 +34,16 @@ define(function(require) {
 			this._super();
 			setTimeout(() => {
 				this.$el.removeClass('w_hide');
-			});
+			}, 50);
+		},
+		viewBeActive: function() {
+			this._super();
+			setTimeout(() => {
+				this.$el.removeClass('w_hide');
+			}, 50);
+		},
+		viewBeInActive: function() {
+			this.$el.addClass('w_hide');
 		},
 		constructor: function() {
 			this._super();
@@ -41,6 +51,7 @@ define(function(require) {
 			if(!UserModel.singleton().isLogin()) {
 				SystemModel.singleton().set('afterLoginJump', location.hash);
 				location.hash = '/auth';
+				return false;
 			}
 		}
 	});

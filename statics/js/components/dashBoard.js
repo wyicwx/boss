@@ -10,23 +10,19 @@ define(function (require) {
 				{ className: "jumbotron" },
 				React.createElement(
 					"div",
-					{ className: "container" },
+					{ className: "clearfix" },
 					React.createElement(
 						"div",
-						{ className: "row" },
+						{ className: "col-lg-12" },
 						React.createElement(
-							"div",
-							{ className: "col-lg-12" },
-							React.createElement(
-								"h1",
-								null,
-								"Hi, Boss."
-							),
-							React.createElement(
-								"h3",
-								null,
-								"how about today?"
-							)
+							"h1",
+							null,
+							"Hi, Boss."
+						),
+						React.createElement(
+							"h3",
+							null,
+							"how about today?"
 						)
 					)
 				)

@@ -60,7 +60,7 @@ define(function (require) {
 								React.createElement(
 									'a',
 									{ href: '#/table/my' },
-									'我的报表',
+									'My table',
 									React.createElement(
 										'span',
 										{ className: 'sr-only' },
@@ -90,7 +90,7 @@ define(function (require) {
 										React.createElement(
 											'a',
 											{ href: '#' },
-											'新建报表'
+											'Create table'
 										)
 									),
 									React.createElement('li', { role: 'separator', className: 'divider' }),
@@ -100,7 +100,7 @@ define(function (require) {
 										React.createElement(
 											'a',
 											{ href: '#/auth/logout' },
-											'退出登陆'
+											'Logout'
 										)
 									)
 								)

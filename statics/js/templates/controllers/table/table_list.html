@@ -1,0 +1,21 @@
+<h3 id="tables">My table</h3>
+<table class="table table-bordered table-hover ">
+	<thead>
+		<tr>
+			<th>table name</th>
+			<th>owner</th>
+			<th>create date</th>
+			<th>opreate</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% for(var i in lists) { %>
+		<tr>
+			<td><%= lists[i].name %></td>
+			<td><%= lists[i].owner.join(',') %></td>
+			<td><%= lists[i].createDate %></td>
+			<td><a href="#/table/detail/id/<%= lists[i]._id %>">查看</a></td>
+		</tr>
+		<% } %>
+	</tbody>
+</table>

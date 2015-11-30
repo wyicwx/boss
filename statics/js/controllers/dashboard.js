@@ -8,7 +8,7 @@ define(function(require) {
 	var IndexAction = app.AuthActionView.extend({
 		mainTain: true,
 		viewBeActive: function() {
-
+			this._super();
 		},
 		initialize: function() {
 			ReactDom.render(React.createElement(UIDashBoard), this.el);
