@@ -37,7 +37,7 @@ define(function(require) {
 							<ul className="nav navbar-nav">
 								<li className="">
 									<a href="#/table/my">
-										我的报表
+										My table
 										<span className="sr-only">(current)</span>
 									</a>
 								</li>
@@ -50,11 +50,11 @@ define(function(require) {
 									</a>
 									<ul className="dropdown-menu">
 										<li>
-											<a href="#">新建报表</a>
+											<a href="#">Create table</a>
 										</li>
 										<li role="separator" className="divider"></li>
 										<li>
-											<a href="#/auth/logout">退出登陆</a>
+											<a href="#/auth/logout">Logout</a>
 										</li>
 									</ul>
 								</li>

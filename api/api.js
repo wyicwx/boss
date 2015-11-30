@@ -24,11 +24,13 @@ router.get('/', (req, res) => {
 			'/api',
 			'/api/authorizations',
 			'/api/records',
-			'/api/tables'
+			'/api/tables',
+			'/api/table'
 		]
 	});
 });
 
+router.use('/table', require('./table.js'));
 router.use('/tables', require('./tables.js'));
 router.use('/authorizations', require('./authorizations.js'));
 router.use('/records', require('./records.js'));

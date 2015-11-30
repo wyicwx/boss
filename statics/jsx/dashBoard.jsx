@@ -5,12 +5,10 @@ define(function(require) {
 		render: function() {
 			return (
 				<div className="jumbotron">
-					<div className="container">
-						<div className="row">
-							<div className="col-lg-12">
-								<h1>Hi, Boss.</h1>
-								<h3>how about today?</h3>
-							</div>
+					<div className="clearfix">
+						<div className="col-lg-12">
+							<h1>Hi, Boss.</h1>
+							<h3>how about today?</h3>
 						</div>
 					</div>
 				</div>
