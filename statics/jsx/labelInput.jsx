@@ -1,5 +1,6 @@
 define(function(require) {
 	var React = require('react');
+	var ReactDom = require('react-dom');
 
 	var LabelInput = React.createClass({
 		getInitialState: function() {
@@ -57,16 +58,17 @@ define(function(require) {
 		render: function() {
 			var state = this.state;
 			var props = this.props;
+
 			return (
 				<div>
-					<label className="form-control" style={{height: 'auto',cursor: 'text', 'padding-bottom': '3px'}}>
+					<label className="form-control" style={{height: 'auto',cursor: 'text', 'paddingBottom': '3px'}}>
 						{props.fixLabel? <a className="btn btn-success btn-xs mr5 mb5 disabled">{props.fixLabel}</a> : ''}
 						{state.labels.map((lb, key) => {
 							return (
 								<a key={key} className="btn btn-primary btn-xs mr5 mb5" onClick={this.onClick}>{lb}</a>
 							)
 						})}
-						<input onBlur={this.onBlur} style={{border: 'none',outline: 'none'}} type={props.type} placeholder={props.placeholder} onChange={this.onChange} value={state.value} onKeyDown={this.onKeyDown} />
+						<input className="mb5 vat" onBlur={this.onBlur} style={{border: 'none',outline: 'none', height: '22px'}} type={props.type} placeholder={props.placeholder} onChange={this.onChange} value={state.value} onKeyDown={this.onKeyDown} />
 					</label>
 				</div>
 			);
