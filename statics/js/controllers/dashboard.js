@@ -2,7 +2,7 @@ define(function(require) {
 	var app = require('base');
 	var React = require('react');
 	var ReactDom = require('react-dom');
-	var UserModel = require('models/users');
+	var UserModel = require('models/user');
 	var UIDashBoard = require('components/dashBoard');
 
 	var IndexAction = app.AuthActionView.extend({

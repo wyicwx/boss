@@ -4,7 +4,7 @@ define(function(require) {
 	var TableList = React.createClass({
 		render: function() {
 			return (
-				
+				<div></div>
 			);
 		}
 	});

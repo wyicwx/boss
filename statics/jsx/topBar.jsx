@@ -5,7 +5,9 @@ define(function(require) {
 	var TopBar = React.createClass({
 		getInitialState: function() {
 			return {
-				show: false
+				show: false,
+				controller: '',
+				action: ''
 			};
 		},
 		componentDidMount: function() {
@@ -13,6 +15,7 @@ define(function(require) {
 		},
 		render: function() {
 			var state = this.state;
+			var props = this.props;
 			var NavClass = ReactClassnames({
 				navbar: true,
 				'navbar-static-top': true,
@@ -35,7 +38,7 @@ define(function(require) {
 						</div>
 						<div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 							<ul className="nav navbar-nav">
-								<li className="">
+								<li className={state.controller == 'table' ? 'active': ''}>
 									<a href="#/table/my">
 										My table
 										<span className="sr-only">(current)</span>
@@ -45,12 +48,12 @@ define(function(require) {
 							<ul className="nav navbar-nav navbar-right">
 								<li className="dropdown">
 									<a href="javascript:void(0)" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-										{this.props.username}
+										{props.username}
 										<span className="caret"></span>
 									</a>
 									<ul className="dropdown-menu">
 										<li>
-											<a href="#">Create table</a>
+											<a href="#/table/create">Create table</a>
 										</li>
 										<li role="separator" className="divider"></li>
 										<li>

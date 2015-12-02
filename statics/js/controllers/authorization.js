@@ -3,7 +3,7 @@ define(function(require) {
 	var React = require('react');
 	var ReactDom = require('react-dom');
 	var UILoginBox = require('../components/loginBox');
-	var UserModel = require('models/users');
+	var UserModel = require('models/user');
 	var SystemModel = require('models/system');
 
 	var LoginAction = app.ActionView.extend({

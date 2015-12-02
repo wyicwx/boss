@@ -168,14 +168,15 @@
 			if(!activeActionInstance.onStage) {
 				activeActionInstance.onStage = true;
 				activeActionInstance.viewWillAddStage();
-				this.$el.append(activeActionInstance.$el);
+				this.appendAction(activeActionInstance);
 				activeActionInstance.viewAddedStage();
 			}
 		},
+		appendAction: function(activeActionInstance) {
+			this.$el.append(activeActionInstance.$el);
+		},
 		dispath: function(action, rawParams) {
 			var actionInstance = this.actions[action];
-
-			this.activeParams = this.parseParams(rawParams);
 
 			if(this.activeAction && this.activeAction != action && this.actions[this.activeAction]) {
 				this.destroyAction(this.activeAction);
@@ -240,7 +241,9 @@
 				this.viewWillRemoveStage();
 				this.$el.remove();
 				this.viewRemovedStage();
+				return true;
 			}
+			return false;
 		},
 		viewWillRemoveStage: function() {},
 		viewRemovedStage: function() {}
@@ -311,9 +314,10 @@
 				router.activeController = controller;
 				controllerInstance.runAction(activeAction);
 
+				controllerInstance.activeParams = controllerInstance.parseParams(rawParams);
 				controllerInstance.viewBeActive();
 				controllerInstance.dispath(activeAction, rawParams);
-				router.trigger('router');
+				router.trigger('router', controller, activeAction);
 			});
 		},
 		prepareController: function(controller, callback) {

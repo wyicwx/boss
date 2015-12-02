@@ -4,6 +4,43 @@
 .main {
 	margin-top: 51px;
 }
+.db {
+	.db();
+}
+.db_f1 {
+	.db_flex(1);
+}
+
+.p_side_page {
+	.p_side {
+		position: absolute;
+		height: 100%;
+		top: 0;
+		padding-top: 51px;
+		box-sizing: border-box;
+		.transition(all 400ms ease);
+		.transform(translateX(-100%));
+		opacity: 0;
+		width: 250px;
+		background: #222222;
+		.list-group-item {
+			border-radius: 0;
+			border-right: 0;
+		}
+	}
+	.p_page {
+		// .transition(all 200ms ease);
+	}
+	&.p_open {
+		.p_side {
+			.transform(translateX(0));
+			opacity: 1;
+		}
+		.p_page {
+			margin-left: 250px;
+		}
+	}
+}
 
 .w_pageanimate {
 	.transition(all 400ms ease);

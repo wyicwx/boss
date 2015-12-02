@@ -15,7 +15,7 @@ requirejs.config({
 define(function(require) {
 	var app = require('base');
 	var Backbone = require('backbone');
-	var UserModel = require('models/users');
+	var UserModel = require('models/user');
 	var SystemModel = require('models/system');
 
 	app.autoload = (model, callback) => {
@@ -67,10 +67,19 @@ define(function(require) {
 					setTimeout(() => {
 						this.renderTopBar(show);
 					});
+					this.handleTopBar();
 				});
 			} else {
 				this.reactTopBar.setState({show: show});
 			}
+		},
+		handleTopBar: function() {
+			app.router.on('router', (controller, action) => {
+				this.reactTopBar.setState({
+					controller: controller,
+					action: action
+				});
+			});
 		},
 		initialize: function() {
 			UserModel.singleton().on('change:_id', (model, username) => {

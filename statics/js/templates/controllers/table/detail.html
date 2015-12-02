@@ -1,1 +1,108 @@
-<%= JSON.stringify(table) %>
+<div class="col-lg-12">
+	<h3>Basic Info</h3>
+	<div class="well">
+		<div class="row">
+			<div class="col-lg-6">			
+				<div class="breadcrumb">
+					<h6 class="row">
+						<div class="col-lg-2">Table Name</div><div class="col-lg-10"><%= table.name %></div>
+					</h6>
+				</div>
+			</div>
+			<div class="col-lg-6">			
+				<div class="breadcrumb">
+					<h6 class="row">
+						<div class="col-lg-2">Table Id</div><div class="col-lg-10"><%= table._id %></div>
+					</h6>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-6">			
+				<div class="breadcrumb">
+					<h6 class="row">
+						<div class="col-lg-2">Owner</div><div class="col-lg-10"><%= table.owner.join(',') %></div>
+					</h6>
+				</div>
+			</div>
+			<div class="col-lg-6">			
+				<div class="breadcrumb">
+					<h6 class="row">
+						<div class="col-lg-2">Observer</div><div class="col-lg-10"><%= table.observer.join(',') %></div>
+					</h6>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">			
+				<div class="breadcrumb">
+					<h6 class="row">
+						<div class="col-lg-1">Description</div><div class="col-lg-11"></div>
+						<% if(!table.description) { %>
+						<a href="javascript:void(0)" class="btn btn-primary btn-xs">add</a>
+						<% } else { %>
+						<%= table.description %>
+						<% } %>
+					</h6>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<h3>Table Field Info</h3>
+	<div class="well">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>
+						Field Name
+					</th>
+					<th>
+						Field Type
+					</th>
+					<th>
+						Field Description
+					</th>
+					<th>
+						Operation
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% for(var i in table.sysStruct) { %>
+					<tr>
+						<td>
+							<%= table.sysStruct[i] %>
+						</td>
+						<td>
+							String
+						</td>
+						<td>
+							Null
+						</td>
+						<td>
+							
+						</td>
+					</tr>
+				<% } %>
+				<% for(var i in table.struct) { %>
+					<tr>
+						<td>
+							<%= table.struct[i] %>
+						</td>
+						<td>
+							String
+						</td>
+						<td>
+							Null
+						</td>
+						<td>
+							<a href="javascript:void(0)">dimension</a>
+						</td>
+					</tr>
+				<% } %>
+			</tbody>
+		</table>
+	</div>
+
+</div>

@@ -1,0 +1,54 @@
+<div class="container pt20">
+	<div class="well">
+		<form class="form-horizontal">
+			<fieldset>
+				<legend>Create new table</legend>
+				<div class="form-group">
+					<label class="col-lg-2 control-label">Table Id</label>
+					<div class="col-lg-10">
+						<input type="text" class="form-control" value="system distribution" disabled>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-2 control-label">Table Name(*)</label>
+					<div class="col-lg-10">
+						<input type="text" class="form-control" placeholder="table name">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-2 control-label">description</label>
+					<div class="col-lg-10">
+						<textarea class="form-control" rows="3" placeholder="description"></textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-2 control-label">Token</label>
+					<div class="col-lg-10">
+						<input type="token" class="form-control" placeholder="token">
+						<span class="help-block">
+							When token be setted, boss collect the data what param has token.
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-2 control-label">Owner</label>
+					<div class="col-lg-10" id="owner">
+						<!-- <input type="text" class="form-control" placeholder="owner"> -->
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-2 control-label">Observer</label>
+					<div class="col-lg-10" id="observer">
+						<!-- <input type="text" class="form-control" placeholder="observer"> -->
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-lg-10 col-lg-offset-2">
+						<button type="submit" class="btn btn-primary">Submit</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+		<div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div>
+	</div>
+</div>

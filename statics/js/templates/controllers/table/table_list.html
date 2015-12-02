@@ -4,8 +4,9 @@
 		<tr>
 			<th>table name</th>
 			<th>owner</th>
+			<th>observer</th>
 			<th>create date</th>
-			<th>opreate</th>
+			<th>operate</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -13,8 +14,12 @@
 		<tr>
 			<td><%= lists[i].name %></td>
 			<td><%= lists[i].owner.join(',') %></td>
+			<td><%= lists[i].observer.join(',') %></td>
 			<td><%= lists[i].createDate %></td>
-			<td><a href="#/table/detail/id/<%= lists[i]._id %>">查看</a></td>
+			<td>
+				<a href="#/table/detail/id/<%= lists[i]._id %>">View</a>&emsp;
+				<a href="#/table/edit/id/<%= lists[i]._id %>">Edit</a>
+			</td>
 		</tr>
 		<% } %>
 	</tbody>

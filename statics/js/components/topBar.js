@@ -7,12 +7,15 @@ define(function (require) {
 
 		getInitialState: function () {
 			return {
-				show: false
+				show: false,
+				controller: '',
+				action: ''
 			};
 		},
 		componentDidMount: function () {},
 		render: function () {
 			var state = this.state;
+			var props = this.props;
 			var NavClass = ReactClassnames({
 				navbar: true,
 				'navbar-static-top': true,
@@ -56,7 +59,7 @@ define(function (require) {
 							{ className: 'nav navbar-nav' },
 							React.createElement(
 								'li',
-								{ className: '' },
+								{ className: state.controller == 'table' ? 'active' : '' },
 								React.createElement(
 									'a',
 									{ href: '#/table/my' },
@@ -78,7 +81,7 @@ define(function (require) {
 								React.createElement(
 									'a',
 									{ href: 'javascript:void(0)', className: 'dropdown-toggle', 'data-toggle': 'dropdown', role: 'button', 'aria-haspopup': 'true', 'aria-expanded': 'false' },
-									this.props.username,
+									props.username,
 									React.createElement('span', { className: 'caret' })
 								),
 								React.createElement(
@@ -89,7 +92,7 @@ define(function (require) {
 										null,
 										React.createElement(
 											'a',
-											{ href: '#' },
+											{ href: '#/table/create' },
 											'Create table'
 										)
 									),
