@@ -27,11 +27,15 @@ define(function(require) {
 		onKeyDown: function(event) {
 			var isChange = false;
 			if((event.keyCode == '13' || event.keyCode == '32') && this.state.value) {
-				var labels = this.state.labels.concat([this.state.value]);
-				labels = _.uniq(labels);
-				this.setState({labels: labels});
+				if(this.state.value != this.props.fixLabel) {
+					var labels = this.state.labels.concat([this.state.value]);
+					labels = _.uniq(labels);
+					this.setState({labels: labels});
+					isChange = true;
+				}
 				this.setState({'value': ''});
-				isChange = true;
+				event.preventDefault();
+				event.stopPropagation();
 			} else if(event.keyCode == '8') {
 				if(!this.state.value && this.state.labels.length) {
 					this.setState({labels: this.state.labels.slice(0, -1)});
@@ -40,7 +44,11 @@ define(function(require) {
 			}
 			if(isChange) {
 				setTimeout(() => {
-					this.props.onChange(this.state.labels);
+					if(this.props.fixLabel) {
+						this.props.onChange(this.state.labels.concat([this.props.fixLabel]));
+					} else {
+						this.props.onChange(this.state.labels);
+					}
 				});
 			}
 		},
@@ -50,10 +58,9 @@ define(function(require) {
 			labels = _(labels).without(event.target.text);
 			this.setState({labels: labels});
 		},
-		onBlur: function() {
-			this.onKeyDown({
-				keyCode: '13'
-			});
+		onBlur: function(event) {
+			event.keyCode = '13';
+			this.onKeyDown(event);
 		},
 		render: function() {
 			var state = this.state;
@@ -64,9 +71,11 @@ define(function(require) {
 					<label className="form-control" style={{height: 'auto',cursor: 'text', 'paddingBottom': '3px'}}>
 						{props.fixLabel? <a className="btn btn-success btn-xs mr5 mb5 disabled">{props.fixLabel}</a> : ''}
 						{state.labels.map((lb, key) => {
-							return (
-								<a key={key} className="btn btn-primary btn-xs mr5 mb5" onClick={this.onClick}>{lb}</a>
-							)
+							if(lb != props.fixLabel) {
+								return (
+									<a key={key} className="btn btn-primary btn-xs mr5 mb5" onClick={this.onClick}>{lb}</a>
+								)
+							}
 						})}
 						<input className="mb5 vat" onBlur={this.onBlur} style={{border: 'none',outline: 'none', height: '22px'}} type={props.type} placeholder={props.placeholder} onChange={this.onChange} value={state.value} onKeyDown={this.onKeyDown} />
 					</label>

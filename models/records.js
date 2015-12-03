@@ -25,7 +25,7 @@ var Schema = new mongoose.Schema({
 
 Schema.method('record', (req, callback) => {
 	callback || (callback = () => {});
-	var params = req.query || req.body;
+	var params = _.extend({}, req.query, req.body);
 	var model = new records(params);
 	var error = model.validateSync();
 
@@ -39,9 +39,11 @@ Schema.method('record', (req, callback) => {
 		if(err) {
 			return callback(err);
 		}
+		if(!data) return;
+
 		if(data.token) {
 			if(params.token != data.token) {
-				return callback();
+				return callback({message: 'token error'});
 			} else {
 				delete params.token;
 			}

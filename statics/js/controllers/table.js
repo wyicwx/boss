@@ -4,6 +4,7 @@ define(function(require) {
 	var ReactDom = require('react-dom');
 	var TablesCollection = require('models/tables');
 	var TableModel = require('models/table');
+	var RecordsCollection = require('models/records');
 	var UserModel = require('models/user');
 
 	var UITableSide = require('components/tableSide');
@@ -36,34 +37,59 @@ define(function(require) {
 				return location.hash = '#/table';
 			}
 
-			if(TablesCollection.singleton().get(params.id)) {
-				this.model = TablesCollection.singleton().get(params.id);
+			this.model.fetch({
+				data: {
+					_id: params.id
+				}
+			}).done(() => {
 				this.renderDetail();
-			} else {
-				this.model.fetch({
-					data: {
-						_id: params.id
-					}
-				}).done(() => {
-					this.renderDetail();
-				});
-			}
+			});
 		},
 		initialize: function() {
 			this.model = new TableModel();
 		}
 	});
 
-	var CreateAction = app.AuthActionView.extend({
+	var TableFormAction = app.AuthActionView.extend({
 		template: require('text!templates/controllers/table/create.html'),
 		events: {
-			
+			'blur [data-name]': function(e) {
+				var target = $(e.currentTarget);
+				var name = target.data('name');
+				var value = target.val();
+
+				if(!this.model.set(name, value, {validate: true, validateKey: name})) {
+					if(_.has(this.model.validationError, name)) {
+						this.showInputError(name);
+					}
+				}
+			},
+			'focus [data-name]': function(e) {
+				var target = $(e.currentTarget);
+				target.closest('.form-group').removeClass('has-error');
+			},
+			'submit form': function(e) {
+				if(!this.model.isValid()) {
+					_.each(this.model.validationError, (msg, name) => {
+						this.showInputError(name);
+					});
+				} else {
+					this.model.save().done(function(data) {
+						location.hash = '#/table/detail/id/'+data.data._id;
+					});
+				}
+
+				return false;
+			}
+		},
+		showInputError: function(name) {
+			this.$('[data-name="'+name+'"]').closest('.form-group').addClass('has-error');
 		},
 		renderLabelInput: function() {
 			this.reactOwner = ReactDom.render(React.createElement(UILabelInput, {
 				placeholder: 'owner',
 				onChange: (labels) => {
-					this.model.set('owner', labels.join(','));
+					this.model.set('owner', labels);
 				},
 				fixLabel: UserModel.singleton().get('username')
 			}), this.$('#owner').get(0));
@@ -71,14 +97,54 @@ define(function(require) {
 			this.reactObserver = ReactDom.render(React.createElement(UILabelInput, {
 				placeholder: 'observer',
 				onChange: (labels) => {
-					this.model.set('observer', labels.join(','));
+					this.model.set('observer', labels);
 				}
 			}), this.$('#observer').get(0));
+		},
+		viewBeActive: function(params) {
+			this._super();
+
+			if(app.router.activeAction == 'edit') {
+				this.model.fetch({
+					data: {
+						_id: params.id
+					}
+				}).done((data) => {
+					this.reactObserver.setState({labels: data.data.observer});
+					this.reactOwner.setState({labels: data.data.owner});
+					_.each(data.data, (value, key) => {
+						this.$('[data-name="'+key+'"]').val(value);
+					});
+				});
+			}
+
 		},
 		initialize: function() {
 			this.model = new TableModel();
 			this.$el.html(this.template);
 			this.renderLabelInput();
+		}
+	});
+
+	var RealTimeData = app.AuthActionView.extend({
+		template: '<div class="table"></div><div class="navigation"></div>',
+		renderTable: function(data) {
+			var tmpl = require('text!templates/controllers/table/realtime_data.html');
+			
+			var struct = data.table.sysStruct.concat(data.table.struct);
+			debugger;
+		},
+		viewBeActive: function(params) {
+			this.model.fetch({
+				data: {
+					_id: params.id
+				}
+			}).done((data) => {
+				this.renderTable(data);
+			});
+		},
+		initialize: function() {
+			this.model = new RecordsCollection();
 		}
 	});
 
@@ -93,10 +159,11 @@ define(function(require) {
 			'detail': DetailAction,
 			'realtime_trend': DetailAction,
 			'history_trend': DetailAction,
-			'realtime_data': DetailAction,
+			'realtime_data': RealTimeData,
 			'realtime_analysis': DetailAction,
 			'history_analysis': DetailAction,
-			'create': CreateAction
+			'create': TableFormAction,
+			'edit': TableFormAction
 		},
 		viewBeActive: function() {
 			this.handleSideRouter();

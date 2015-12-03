@@ -15,9 +15,20 @@ define(function(require) {
 			dimension: undef
 		},
 		validate: function(attrs, options) {
-			debugger;
-			if (attrs.end < attrs.start) {
-				return "can't end before it starts";
+			var error = {};
+
+			if(!attrs.name) {
+				error.name = 'name is required';
+			}
+
+			if(options.validateKey) {
+				if(error[options.validateKey]) {
+					return error;
+				}
+			} else {
+				if(_.size(error)) {
+					return error;
+				}
 			}
 		},
 		idAttribute: '_id',
