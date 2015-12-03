@@ -34,6 +34,7 @@ router.use('/table', require('./table.js'));
 router.use('/tables', require('./tables.js'));
 router.use('/authorizations', require('./authorizations.js'));
 router.use('/records', require('./records.js'));
+router.use('/trend', require('./trend.js'));
 
 
 module.exports = router;
