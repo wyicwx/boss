@@ -6,6 +6,7 @@ define(function(require) {
 	var TableModel = require('models/table');
 	var RecordsCollection = require('models/records');
 	var UserModel = require('models/user');
+	var Pagination = require('widgets/pagination');
 
 	var UITableSide = require('components/tableSide');
 	var UILabelInput = require('components/labelInput');
@@ -127,24 +128,54 @@ define(function(require) {
 	});
 
 	var RealTimeData = app.AuthActionView.extend({
-		template: '<div class="table"></div><div class="navigation"></div>',
+		template: '<div class="list"></div><div class="pg col-lg-12"></div>',
 		renderTable: function(data) {
 			var tmpl = require('text!templates/controllers/table/realtime_data.html');
-			
 			var struct = data.table.sysStruct.concat(data.table.struct);
-			debugger;
+			var list = data.data;
+
+			this.$('.list').html(_.template(tmpl)({
+				struct: struct,
+				list: list
+			}));
+
+			var limit = this.params.limit || 20;
+
+			this.pagination.setup({
+				page: this.params.page,
+				total: Math.ceil(data.total / limit)
+			});
+		},
+		renderPagination: function() {
+			var view = this;
+
+			this.pagination = new Pagination({
+				className: 'pagination'
+			});
+			this.pagination.on('page', function(page) {
+				var params = _.pick(view.params, ['id', 'limit', 'sort']);
+
+				params.page = page;
+
+				location.hash = '/table/realtime_data/'+_.flatten(_.pairs(params)).join('/');
+			});
+			this.$('.pg').append(this.pagination.$el);
 		},
 		viewBeActive: function(params) {
 			this.model.fetch({
 				data: {
-					_id: params.id
+					_id: params.id,
+					page: params.page,
+					limit: params.limit
 				}
 			}).done((data) => {
 				this.renderTable(data);
 			});
 		},
 		initialize: function() {
+			this.$el.html(this.template);
 			this.model = new RecordsCollection();
+			this.renderPagination();
 		}
 	});
 

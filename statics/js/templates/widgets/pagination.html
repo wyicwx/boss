@@ -1,0 +1,39 @@
+<% if(page > 1) { %>
+	<li>	
+		<a href="javascript:void(0)" data-page="<%= page-1 %>" class="prev navi_prev">上一页</a>
+	</li>
+<% } %>
+	<% if(page-offset > 1) { %>
+	<li>
+		<a href="javascript:void(0)" data-page="1">1</a>
+	</li>
+	<% if(page-offset != 2) { %>
+	<li>
+		<span style="color: #999999;">...</span>
+	</li>
+	<% } %>
+	<% } %>
+	<% for (var i = page-offset; i <= page+offset; i++) { %>
+		<% if(i > 0 && i <= total) { %>
+			<% if(i === page) { %>
+				<li class="active">
+					<a><%= i %></a>
+				</li>
+			<% } else { %>
+				<li>
+					<a href="javascript:void(0)" data-page="<%= i %>"><%= i %></a>
+				</li>
+			<% } %>
+		<% } %>
+	<% } %>
+	<% if(total-offset > page) { %>
+	<li>
+		<span style="color: #999999;">...</span>
+	</li>
+	<% } %>
+</ul>
+<% if(page < total) {%>
+	<li>
+		<a href="javascript:void(0)" data-page="<%= page+1 %>" class="navi_next">下一页</a>
+	</li>
+<% } %>

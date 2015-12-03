@@ -17,10 +17,19 @@ router.route('/')
 						message: err.message
 					});
 				}
-				res.json({
-					message: '',
-					data: data,
-					table: ret.data
+				RecordsModel.count({id: params._id}, (err, count) => {
+					if(err) {
+						return res.status(500).json({
+							message: err.message
+						});
+					}
+					
+					res.json({
+						message: '',
+						data: data,
+						table: ret.data,
+						total: count
+					});
 				});
 			});
 		});

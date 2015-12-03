@@ -1,3 +1,33 @@
-<table class="table">
-	
-</table>
+<div class="col-lg-12 mt20">
+	<table class="table table-bordered table-hover ">
+		<thead>
+			<tr>
+				<% for(var i in struct) { %>
+				<th>
+					<%= struct[i] %>
+				</th>			
+				<% } %>
+			</tr>
+		</thead>
+		<tbody>
+			<% for(var j in list) { %>
+			<tr>
+				<% for(var i in struct) {
+					if(struct[i] == 'time') {
+					%>
+					<td>
+						<%= list[j]['timeFormat'] %>
+					</td>	
+					
+					<% } else { %>
+					<td>
+						<%= list[j][struct[i]] %>
+					</td>
+
+					<% } %>
+				<% } %>
+			</tr>
+			<% } %>
+		</tbody>
+	</table>
+</div>
