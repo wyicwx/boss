@@ -21,18 +21,24 @@ router.route('/')
 	})
 	.post((req, res) => {
 		var params = req.body;
-		var owner = (params.owner||'').split(',');
-
+		var owner = params.owner || [];
+		if(!_.isArray(owner)) {
+			owner = [];
+		}
 		// verify
 		owner.push(req.user.username);
 		owner = _.uniq(owner);
 		owner = _.compact(owner);
+		var observer = params.observer;
+		if(!_.isArray(observer)) {
+			observer = [];
+		}
 
 		var model = new TableModel({
 			name: params.name,
 			owner: owner,
 			struct: _.compact((params.struct||'').split(',')),
-			observer: _.compact((params.observer||'').split(',')),
+			observer: observer,
 			password: params.password,
 			timestamp: new Date()
 		});

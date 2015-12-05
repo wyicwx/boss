@@ -34,7 +34,7 @@ router.route('/history')
 						}
 					}
 				}
-			]).exec((err, data) => {
+			]).sort({_id: -1}).exec((err, data) => {
 				if(err) {
 					return res.status(500).json({
 						message: err.message

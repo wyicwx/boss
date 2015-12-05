@@ -5,10 +5,7 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 
 var Schema = new mongoose.Schema({
 	// 时间
-	time: {
-		type: Date,
-		default: Date.now()
-	},
+	time: Date,
 	// 请求地址ip
 	ip: String,
 	// 操作符
