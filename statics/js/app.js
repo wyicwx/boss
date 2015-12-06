@@ -8,7 +8,8 @@ requirejs.config({
 		'react-classnames': './vendors/react-classnames',
 		'jquery': './vendors/jquery',
 		'underscore': './vendors/underscore',
-		'backbone': './vendors/backbone'
+		'backbone': './vendors/backbone',
+		'Chart': './vendors/Chart'
 	}
 });
 

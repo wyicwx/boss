@@ -7,6 +7,7 @@ define(function(require) {
 	var RecordsCollection = require('models/records');
 	var UserModel = require('models/user');
 	var Pagination = require('widgets/pagination');
+	var RealTimeTrendModel = require('models/realtimetrend');
 
 	var UITableSide = require('components/tableSide');
 	var UILabelInput = require('components/labelInput');
@@ -127,7 +128,7 @@ define(function(require) {
 		}
 	});
 
-	var RealTimeData = app.AuthActionView.extend({
+	var RealTimeDataAction = app.AuthActionView.extend({
 		template: '<div class="list"></div><div class="pg col-lg-12"></div>',
 		renderTable: function(data) {
 			var tmpl = require('text!templates/controllers/table/realtime_data.html');
@@ -179,6 +180,48 @@ define(function(require) {
 		}
 	});
 
+	var RealTimeTrendAction = app.AuthActionView.extend({
+		renderChart: function() {
+			var data = this.model.toJSON();
+			var labels = [];
+			var datas = [];
+			_.each(data, function(item) {
+				labels.push(item._id);
+				datas.push(item.total);
+			});
+			requirejs(['Chart'], (Chart) => {
+				var chart = new Chart(this.ctx);
+				chart.Line({
+					labels: labels,
+					datasets: [{
+						fillColor : "rgba(151,187,205,0.5)",
+						strokeColor : "rgba(151,187,205,1)",
+						pointColor : "rgba(151,187,205,1)",
+						pointStrokeColor : "#fff",
+						data : datas
+					}]
+				});
+			});
+		},
+		viewBeActive: function(params) {
+			this.model.fetch({
+				data: {
+					_id: params.id
+				}
+			}).done(() => {
+				this.renderChart();
+			});
+		},
+		initialize: function() {
+			this.model = new RealTimeTrendModel();
+			this.canvas = $('<canvas>');
+			this.canvas.width('100%');
+			this.canvas.css('background', 'white');
+			this.ctx = this.canvas.get(0).getContext("2d");
+			this.$el.append(this.canvas);
+		}
+	});
+
 	var Controller = app.ControllerView.extend({
 		template: '<div class="p_side_page"><div class="p_side"></div><div class="p_page"></div></div>',
 		defaultAction: 'my',
@@ -188,9 +231,9 @@ define(function(require) {
 		Actions: {
 			'my': MyAction,
 			'detail': DetailAction,
-			'realtime_trend': DetailAction,
+			'realtime_trend': RealTimeTrendAction,
 			'history_trend': DetailAction,
-			'realtime_data': RealTimeData,
+			'realtime_data': RealTimeDataAction,
 			'realtime_analysis': DetailAction,
 			'history_analysis': DetailAction,
 			'create': TableFormAction,
