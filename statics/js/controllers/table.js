@@ -181,16 +181,20 @@ define(function(require) {
 	});
 
 	var RealTimeTrendAction = app.AuthActionView.extend({
+		template: require('text!templates/controllers/table/realtime_trend.html'),
 		renderChart: function() {
 			var data = this.model.toJSON();
 			var labels = [];
 			var datas = [];
 			_.each(data, function(item) {
-				labels.push(item._id);
+				labels.push(item._id.split(' ')[1]);
 				datas.push(item.total);
 			});
+
 			requirejs(['Chart'], (Chart) => {
-				var chart = new Chart(this.ctx);
+				var chart = new Chart(this.ctx, {
+					responsive: true
+				});
 				chart.Line({
 					labels: labels,
 					datasets: [{
@@ -200,6 +204,8 @@ define(function(require) {
 						pointStrokeColor : "#fff",
 						data : datas
 					}]
+				}, {
+					pointDot: false
 				});
 			});
 		},
@@ -213,12 +219,10 @@ define(function(require) {
 			});
 		},
 		initialize: function() {
+			this.$el.html(this.template);
 			this.model = new RealTimeTrendModel();
-			this.canvas = $('<canvas>');
-			this.canvas.width('100%');
-			this.canvas.css('background', 'white');
+			this.canvas = this.$('canvas');
 			this.ctx = this.canvas.get(0).getContext("2d");
-			this.$el.append(this.canvas);
 		}
 	});
 
