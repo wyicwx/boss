@@ -99,7 +99,8 @@ router.route('/realtime')
 					});
 				}
 
-				console.log(data);
+				
+				// console.log(data);
 
 				res.status(201).json({
 					message: '',
