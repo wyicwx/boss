@@ -269,6 +269,10 @@ define(function(require) {
 		initialize: function() {
 			this.$el.html(this.template);
 			this.reactTableSide = ReactDom.render(React.createElement(UITableSide), this.$('.p_side').get(0));
+
+			var Error = require('widgets/alert').ErrorAlert;
+
+			(new Error()).show({msg: 123123});
 		}
 	});
 

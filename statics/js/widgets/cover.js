@@ -2,50 +2,54 @@ define(function(require) {
 	var app = require('helper/base');
 
 	var Base = app.BaseView.extend({
-		name: null,
 		el: null,
 		app: app,
-		constructor: function(option) {
-			option || (option = {});
+		constructor: function(options) {
+			options || (options = {});
 			_.extend(this, _.pick(options, ['template']));
-			this._super();
-			if(option.name) {
-				this.$el.data('name', option.name);
+			this._super(options);
+			if(options.name) {
+				this.$el.data('name', options.name);
 			}
-			Cover.singleton().register(this);
+			if(options.cover) {
+				options.cover.register(this);
+			} else {
+				Cover.singleton().register(this);
+			}
 		},
 		status: 0, // 1 show, 0 hide
 		mask: false, // has mask
-		show: function(option) {
-			option || (option = {});
+		show: function(options) {
+			options || (options = {});
 
 			this.status = 1;
 			this.trigger('show', this);
 			this.$el.show();
 		},
-		hide: function(option) {
-			option || (option = {});
+		hide: function(options) {
+			options || (options = {});
 
 			this.status = 0;
-			if(!option.silent) {
+			if(!options.silent) {
 				this.trigger('hide', this);
 			}
 		},
-		setElement: function() {
-			var ret = this._super();
+		setElement: function(element, delegate) {
+			var ret = this._super(element, delegate);
 			if(this.template) {
 				this.$el.html(_.result(this, 'template'));
 			}
 			return ret;
 		},
 		destroy: function() {
-
+			this.trigger('destroy', this);
+			this.off();
 		}
 	});
 
 	var PosCenterBase = Base.extend({
-		show: function() {
-			this._super();
+		show: function(options) {
+			this._super(options);
 			this.setPosCenter();
 		},
 		setPosCenter: function() {
@@ -64,8 +68,8 @@ define(function(require) {
 				top: top
 			});
 		},
-		setElement: function() {
-			var ret = this._super();
+		setElement: function(element, delegate) {
+			var ret = this._super(element, delegate);
 
 			this.$el.css('position', 'absolute');
 
@@ -73,8 +77,41 @@ define(function(require) {
 		}
 	});
 
+	var FixedBase = Base.extend({
+		setElement: function(element, delegate) {
+			var ret = this._super(element, delegate);
+
+			this.$el.css('position', 'fixed');
+
+			return ret;
+		}
+	});
+
+	var FixedCenterBase = Base.extend({
+		show: function(options) {
+			this._super(options);
+			this.setPosCenter();
+		},
+		setPosCenter: function() {
+			var width = this.$el.width();
+			var height = this.$el.height();
+			var wWdith = $(window).width();
+			var wHeight = $(window).height();
+
+			var left = (wWdith-width)/2;
+			var top = (wHeight-height)/2;
+			if(top < 0) {
+				top = 0;
+			}
+			this.$el.css({
+				left: left,
+				top: top
+			});
+		}
+	});
+
 	var Cover = app.BaseView.extend({
-		zIndex: 1000,
+		zIndex: 2000,
 		subview: null,
 		className: 'w_cover',
 		el: null,
@@ -110,14 +147,20 @@ define(function(require) {
 		register: function(widget) {
 			this.subview.push(widget);
 
-			widget.on('hide', _.bind(function(view) {
+			widget.on('hide', function(view) {
 				this.checkHideStatus(view);
 				this.adjustMaskIndex();
 				this.checkCurrentView();
-			}, this));
+			}, this);
 
 			widget.on('show', function(view) {
 				this.showReady(view);
+				this.adjustMaskIndex();
+				this.checkCurrentView();
+			}, this);
+
+			widget.on('destroy', function(view) {
+				debugger;
 				this.adjustMaskIndex();
 				this.checkCurrentView();
 			}, this);
@@ -224,7 +267,9 @@ define(function(require) {
 		}
 	}, {
 		Base: Base,
-		PosCenterBase: PosCenterBase
+		PosCenterBase: PosCenterBase,
+		FixedCenterBase: FixedCenterBase,
+		FixedBase: FixedBase
 	});
 
 	return Cover;
