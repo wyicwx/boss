@@ -941,3 +941,9 @@ a {
 .w_input.w_warning {
   border-color: red!important;
 }
+.animation {
+  -webkit-transition: all ease 400ms;
+  -moz-transition: all ease 400ms;
+  -ms-transition: all ease 400ms;
+  transition: all ease 400ms;
+}

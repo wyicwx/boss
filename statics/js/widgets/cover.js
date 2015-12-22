@@ -19,11 +19,15 @@ define(function(require) {
 		},
 		status: 0, // 1 show, 0 hide
 		mask: false, // has mask
+		maskClickHide: false, // click mask to hide
 		show: function(options) {
 			options || (options = {});
 
 			this.status = 1;
 			this.trigger('show', this);
+			this._show();
+		},
+		_show: function() {
 			this.$el.show();
 		},
 		hide: function(options) {
@@ -33,6 +37,10 @@ define(function(require) {
 			if(!options.silent) {
 				this.trigger('hide', this);
 			}
+			this._hide();
+		},
+		_hide: function() {
+			this.$el.hide();
 		},
 		setElement: function(element, delegate) {
 			var ret = this._super(element, delegate);
@@ -42,6 +50,9 @@ define(function(require) {
 			return ret;
 		},
 		destroy: function() {
+			if(this.status) {
+				this.hide();
+			}
 			this.trigger('destroy', this);
 			this.off();
 		}

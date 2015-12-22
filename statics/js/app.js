@@ -25,7 +25,6 @@ define(function(require) {
 		});
 	};
 
-
 	app.AuthActionView = app.ActionView.extend({
 		viewWillAddStage: function() {
 			this._super();
@@ -47,13 +46,12 @@ define(function(require) {
 			this.$el.addClass('w_hide');
 		},
 		constructor: function() {
-			this._super();
-
 			if(!UserModel.singleton().isLogin()) {
 				SystemModel.singleton().set('afterLoginJump', location.hash);
 				location.hash = '/auth';
 				return false;
 			}
+			this._super();
 		}
 	});
 
@@ -103,6 +101,16 @@ define(function(require) {
 			});
 		}
 	});
+
+	Backbone.ajax = function() {
+		var promise = $.ajax.apply(this, arguments);
+
+		promise.fail(function() {
+			debugger;
+		});
+
+		return promise;
+	};
 
 	UserModel.singleton().fetch().always(function() {
 		Backbone.history.start();

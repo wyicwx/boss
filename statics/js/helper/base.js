@@ -29,7 +29,7 @@
 		throw new Error('app.autoload is abstract function, override it.');
 	};
 	/**
-	 * 添加_.super函数来调用父层函数
+	 * 添加支持.super函数来调用父层函数
 	 */
 	var extend = function(protoProps, staticProps) {
 		var args = _.toArray(arguments);
@@ -255,11 +255,12 @@
 	 */
 	app.Router = Backbone.Router.extend({
 		app: app,
+		module: null,
 		routes: {
-			'': 'router',
-			':controller': 'router',
-			':controller/:action': 'router',
-			':controller/:action/*params': 'router'
+			'': 'caRoute',
+			':controller': 'caRoute',
+			':controller/:action': 'caRoute',
+			':controller/:action/*params': 'caRoute'
 		},
 		previousController: null,
 		activeController: null,
@@ -275,9 +276,8 @@
 		 * @description 
 		 * 由url上取得controller、action
 		 * -》解析controller是否存在，不存在则使用errorController，若无则defaultController
-		 * -》
 		 */
-		router: function(controller, action, params) {
+		caRoute: function(controller, action, params) {
 			params || (params = '');
 			var rawParams;
 			var router = this;
@@ -332,15 +332,30 @@
 				callback(this.controllers[controller]);
 			}
 		},
-		constructor: function(args) {
+		constructor: function(options) {
 			this.controllers = {};
-			if(args) {
-				_.extend(this, args);
+			if(options) {
+				_.extend(this, options);
+			}
+			if(this.module) {
+				var module = this.module;
+				var routes = {};
+				_.each(this.routes, function(value, key) {
+					if(key) {
+						routes[module+'/'+key] = value;
+					} else {
+						routes[module+key] = value;
+					}
+				}, this);
+				options.routes = routes;
 			}
 			app.Router.__super__.constructor.apply(this,arguments);
+			// debugger;
 			if(!this.mainView) {
 				throw new Error('Router.mainView is abstract property, override it.');
 			}
 		}
 	});
+
+	
 }));
