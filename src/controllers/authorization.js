@@ -7,6 +7,7 @@ define(function(require) {
 	var SystemModel = require('models/system');
 
 	var LoginAction = app.ActionView.extend({
+		mainTain: true,
 		viewBeActive: function() {
 			var view = this;
 
